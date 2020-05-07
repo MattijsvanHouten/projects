@@ -38,10 +38,67 @@ class sort():
         
         return arr
 
+    def insertion_sort(self, arr):
+        n = len(arr)
+        for i in range(n):
+            cursor = arr[i]
+            pos = i
+
+            while pos > 0 and arr[pos - 1] > cursor:
+                arr[pos] = arr[pos - 1]
+                pos = pos - 1
+
+            arr[pos] = cursor
+
+        return arr
+
+    def merge_sort(self, arr):
+        if len(arr) > 1:
+            mid = len(arr) // 2
+            left = arr[:mid]
+            right = arr[mid:]
+
+            #    on each half
+            merge_sort(left)
+            merge_sort(right)
+
+            # Two iterators for traversing the two halves
+            i = 0
+            j = 0
+            
+            # Iterator for the main list
+            k = 0
+            
+            while i < len(left) and j < len(right):
+                if left[i] < right[j]:
+                  # The value from the left half has been used
+                  arr[k] = left[i]
+                  # Move the iterator forward
+                  i += 1
+                else:
+                    arr[k] = right[j]
+                    j += 1
+                # Move to the next slot
+                k += 1
+
+            # For all the remaining values
+            while i < len(left):
+                arr[k] = left[i]
+                i += 1
+                k += 1
+
+            while j < len(right):
+                arr[k]=right[j]
+                j += 1
+                k += 1
+
+
+
+
 random = randomizer()
 sort = sort()
 
-nums = random.randomize(0, 100, 20)
+nums = random.randomize(start=0, n=12, end=100)
 
 print(nums)               
-print(sort.selection_sort(nums))
+print(sort.merge_sort(nums))
