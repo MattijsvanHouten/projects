@@ -52,46 +52,40 @@ class sort():
 
         return arr
 
+    def merge(self, left, right, merged):
+
+        left_cursor, right_cursor = 0, 0
+        while left_cursor < len(left) and right_cursor < len(right):
+          
+            # Sort each one and place into the result
+            if left[left_cursor] <= right[right_cursor]:
+                merged[left_cursor+right_cursor]=left[left_cursor]
+                left_cursor += 1
+            else:
+                merged[left_cursor + right_cursor] = right[right_cursor]
+                right_cursor += 1
+                
+        for left_cursor in range(left_cursor, len(left)):
+            merged[left_cursor + right_cursor] = left[left_cursor]
+            
+        for right_cursor in range(right_cursor, len(right)):
+            merged[left_cursor + right_cursor] = right[right_cursor]
+
+        return merged
+
     def merge_sort(self, arr):
-        if len(arr) > 1:
-            mid = len(arr) // 2
-            left = arr[:mid]
-            right = arr[mid:]
+        # The last array split
+        if len(arr) <= 1:
+            return arr
+        mid = len(arr) // 2
+        # Perform merge_sort recursively on both halves
+        left, right = self.merge_sort(arr[:mid]), self.merge_sort(arr[mid:])
 
-            #    on each half
-            merge_sort(left)
-            merge_sort(right)
+        # Merge each side together
+        return self.merge(left, right, arr.copy())
 
-            # Two iterators for traversing the two halves
-            i = 0
-            j = 0
-            
-            # Iterator for the main list
-            k = 0
-            
-            while i < len(left) and j < len(right):
-                if left[i] < right[j]:
-                  # The value from the left half has been used
-                  arr[k] = left[i]
-                  # Move the iterator forward
-                  i += 1
-                else:
-                    arr[k] = right[j]
-                    j += 1
-                # Move to the next slot
-                k += 1
 
-            # For all the remaining values
-            while i < len(left):
-                arr[k] = left[i]
-                i += 1
-                k += 1
-
-            while j < len(right):
-                arr[k]=right[j]
-                j += 1
-                k += 1
-
+    
 
 
 
@@ -99,6 +93,5 @@ random = randomizer()
 sort = sort()
 
 nums = random.randomize(start=0, n=12, end=100)
-
-print(nums)               
+print(nums)             
 print(sort.merge_sort(nums))
